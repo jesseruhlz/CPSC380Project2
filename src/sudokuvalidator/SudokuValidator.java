@@ -85,6 +85,43 @@ public class SudokuValidator {
         }
     }
     
+    //second thread that will check each row in the grid-array for errors
+    static private class RowCheck extends Thread{
+        
+        private int rowError = -1;
+        private HashSet<Integer> rowSet = new HashSet<>();
+        
+        public void run(){
+            for (int i = 0; i < 9; ++i){
+                for (int j = 0; j < 9; ++j){
+                    //if an error is found in the row
+                    if(!rowSet.add(board[i][j])){
+                        rowError = i;
+                        System.out.println("Row thread\t\tFound error on row " + (i + 1));
+                        Integer[] tempArray = rowSet.toArray(new Integer[rowSet.size()]);
+                        Arrays.sort(tempArray);
+                        
+                        //iterate to find the suplicate number
+                        for(int k = 0; k < 10; k++){
+                            if(Arrays.asList(tempArray).contains(k) == false){
+                                mRowNum += k + 1;
+                                System.out.println("\nRow Error: row " + (i + 1) + "\tDuplicate " + board[i][j] + "\t Replace the duplicate " + board[i][j] + " with a " + mRowNum);
+                                mRowNum -= 2;
+                                break;
+                            }
+                        }
+                    }
+                    if(j == 8){
+                        rowSet.clear();
+                    }
+                }
+            }
+        }
+        private int GetRowError(){
+            return rowError;
+        }
+    }
+    
     
     public static void main(String[] args) {
         //input file specified by user
@@ -100,9 +137,11 @@ public class SudokuValidator {
         ArrayList<Thread> threads = new ArrayList<>();
         
         ColumnCheck colThread = new ColumnCheck();
+        RowCheck rowThread = new RowCheck();
         
         //need to add the threads
         threads.add(new Thread(colThread));
+        threads.add(new Thread(rowThread));
         
         try{
             for (Thread t : threads){
@@ -123,6 +162,7 @@ public class SudokuValidator {
         }
         
         int colError = colThread.getColumnError();
+        int rowErrors = rowThread.GetRowError();
         
         System.out.println(msgCol);
     }
