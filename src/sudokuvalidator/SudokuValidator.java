@@ -122,6 +122,24 @@ public class SudokuValidator {
         }
     }
     
+    //for the subgrid check will have to divide the subgrids up
+    //use a rowstart, row end, column start, and column end to bound the subgrids
+    //use an integer to keep track of what subgrid we are checking
+    //(int startRow, endRow, startCol, endCol, subgridNum)
+    //make the thread for the subgrids, then use a function to check each subgrid
+    
+    static private class CheckSubGrid extends threads{
+        public void run(){
+            //here we will make the bounds for each subgrid and keep track of each 
+            sgCheck(0, 3, 0, 3, 1);
+            
+        }
+    }
+    
+    private static void sgCheck(int startRow, int endRow, int startCol, int endCol, int subgridNumber){
+        
+    }
+    
     
     public static void main(String[] args) {
         //input file specified by user
