@@ -128,16 +128,44 @@ public class SudokuValidator {
     //(int startRow, endRow, startCol, endCol, subgridNum)
     //make the thread for the subgrids, then use a function to check each subgrid
     
-    static private class CheckSubGrid extends threads{
+    static private class CheckSubGrid extends Thread{
         public void run(){
             //here we will make the bounds for each subgrid and keep track of each 
-            sgCheck(0, 3, 0, 3, 1);
-            
+            sgCheck(0, 3, 0, 3, 1); //row 1 to 3, col 1 to 3, subgrid 1
+            sgCheck(0, 3, 3, 6, 2); //row 4 to 6, col 1 to 3, subgrid 1
+            sgCheck(0, 3, 6, 9, 3); //row 1 to 3, col 1 to 3, subgrid 1
+            sgCheck(3, 6, 0, 3, 4); //row 1 to 3, col 1 to 3, subgrid 1
+            sgCheck(3, 6, 3, 6, 5); //row 1 to 3, col 1 to 3, subgrid 1
+            sgCheck(3, 6, 6, 9, 6); //row 1 to 3, col 1 to 3, subgrid 1
+            sgCheck(6, 9, 0, 3, 7); //row 1 to 3, col 1 to 3, subgrid 1
+            sgCheck(6, 9, 3, 6, 8); //row 1 to 3, col 1 to 3, subgrid 1
+            sgCheck(6, 9, 6, 9, 9); //row 1 to 3, col 1 to 3, subgrid 1
         }
     }
     
     private static void sgCheck(int startRow, int endRow, int startCol, int endCol, int subgridNumber){
+        HashSet<Integer> boardCheck = new HashSet<>();
         
+        for (int i = startRow; i < endRow; ++i){
+            for (int j = startCol; j < endCol; ++j){
+                //using similar error process as previous checks
+                if(!boardCheck.add(board[i][j])){
+                    System.out.println("Subgrid: " + subgridNumber + "\t\tFound an error on row " + (i + 1) + ", and column " + (j + 1));
+                    Integer[] tempArray = boardCheck.toArray(new Integer[boardCheck.size()]);
+                    
+                    //using similar iteration as previously
+                    for(int k = 1; k < 10; k++){
+                        if(Arrays.asList(tempArray).contains(k) == false){
+                                mSubGridNum += k + 1;
+                                System.out.println("\nSubgrid Error: Subgrid number " + subgridNumber + "\tDuplicate " + board[i][j] + "\t Replace the duplicate " + board[i][j] + " with a " + mSubGridNum);
+                                mSubGridNum -= 2;
+                                break;
+                        }
+                    }
+                    
+                }
+            }
+        }
     }
     
     
@@ -156,10 +184,12 @@ public class SudokuValidator {
         
         ColumnCheck colThread = new ColumnCheck();
         RowCheck rowThread = new RowCheck();
+        CheckSubGrid subgridThread = new CheckSubGrid();
         
         //need to add the threads
         threads.add(new Thread(colThread));
         threads.add(new Thread(rowThread));
+        threads.add(new Thread(subgridThread));
         
         try{
             for (Thread t : threads){
@@ -181,6 +211,17 @@ public class SudokuValidator {
         
         int colError = colThread.getColumnError();
         int rowErrors = rowThread.GetRowError();
+        
+        if(colError == -1 && rowErrors == -1){
+            System.out.println("Sudoku Board has no errors!");
+        }
+        else{
+            if(msgSubGrid != " "){
+                System.out.println(msgSubGrid);
+            }
+        }
+        
+        
         
         System.out.println(msgCol);
     }
