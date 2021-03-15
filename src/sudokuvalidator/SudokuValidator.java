@@ -132,14 +132,14 @@ public class SudokuValidator {
         public void run(){
             //here we will make the bounds for each subgrid and keep track of each 
             sgCheck(0, 3, 0, 3, 1); //row 1 to 3, col 1 to 3, subgrid 1
-            sgCheck(0, 3, 3, 6, 2); //row 4 to 6, col 1 to 3, subgrid 1
-            sgCheck(0, 3, 6, 9, 3); //row 1 to 3, col 1 to 3, subgrid 1
-            sgCheck(3, 6, 0, 3, 4); //row 1 to 3, col 1 to 3, subgrid 1
-            sgCheck(3, 6, 3, 6, 5); //row 1 to 3, col 1 to 3, subgrid 1
-            sgCheck(3, 6, 6, 9, 6); //row 1 to 3, col 1 to 3, subgrid 1
-            sgCheck(6, 9, 0, 3, 7); //row 1 to 3, col 1 to 3, subgrid 1
-            sgCheck(6, 9, 3, 6, 8); //row 1 to 3, col 1 to 3, subgrid 1
-            sgCheck(6, 9, 6, 9, 9); //row 1 to 3, col 1 to 3, subgrid 1
+            sgCheck(0, 3, 3, 6, 2); //row 1 to 3, col 1 to 3, subgrid 2
+            sgCheck(0, 3, 6, 9, 3); //row 1 to 3, col 1 to 3, subgrid 3
+            sgCheck(3, 6, 0, 3, 4); //row 4 to 6, col 4 to 6, subgrid 4
+            sgCheck(3, 6, 3, 6, 5); //row 4 to 6, col 4 to 6, subgrid 5
+            sgCheck(3, 6, 6, 9, 6); //row 4 to 6, col 4 to 6, subgrid 6
+            sgCheck(6, 9, 0, 3, 7); //row 7 to 9, col 7 to 9, subgrid 7
+            sgCheck(6, 9, 3, 6, 8); //row 7 to 9, col 7 to 9, subgrid 8
+            sgCheck(6, 9, 6, 9, 9); //row 7 to 9, col 7 to 9, subgrid 9
         }
     }
     
@@ -182,6 +182,7 @@ public class SudokuValidator {
         //using an array list to keep track of the multiple threads
         ArrayList<Thread> threads = new ArrayList<>();
         
+        //create the three threads
         ColumnCheck colThread = new ColumnCheck();
         RowCheck rowThread = new RowCheck();
         CheckSubGrid subgridThread = new CheckSubGrid();
@@ -219,11 +220,18 @@ public class SudokuValidator {
             if(msgSubGrid != " "){
                 System.out.println(msgSubGrid);
             }
+            if(msgRow != " "){
+                System.out.println(msgRow);
+            }
+            if(msgCol != " "){
+                System.out.println(msgCol);
+            }
+            
         }
         
         
         
-        System.out.println(msgCol);
+        //System.out.println(msgCol);
     }
     
 }
