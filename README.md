@@ -8,3 +8,4 @@ Sudoku Verification. Takes a user input .txt file and validates correctness in a
 # https://www.edureka.co/blog/java-thread/
 # https://stackoverflow.com/questions/5868369/how-can-i-read-a-large-text-file-line-by-line-using-java
 # https://stackoverflow.com/questions/5819772/java-parsing-text-file
+# https://www.geeksforgeeks.org/hashset-in-java/
